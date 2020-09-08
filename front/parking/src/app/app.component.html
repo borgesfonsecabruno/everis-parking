@@ -1,0 +1,54 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="collapse navbar-collapse" id="navbarNavDropdown">
+    <ul class="navbar-nav">
+      <li class="nav-item active">
+        <a class="nav-link" routerLink="/home">Home</a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Operações
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          <a class="dropdown-item" routerLink="/adicionar-veiculos">Adicionar veículo</a>
+          <a class="dropdown-item" routerLink="/consultar-veiculos">In/Out</a>
+        </div>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Configurar
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          <a class="dropdown-item" (click)="updateHourTax()">Atualizar taxa por hora</a>
+        </div>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Faturamento
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          <a class="dropdown-item" (click)="calculateAllRevenue()">Calcular todo o faturamento</a>
+          <a class="dropdown-item" (click)="calculateByVehicleRevenue()">Calcular faturamento por veículo</a>
+        </div>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<table class="table table-dark">
+  <tbody>
+    <tr>
+
+    </tr>
+    <tr>
+      <td><span style="color: coral;">Taxa do estacionamento</span>: {{ parkingFactor }}</td>
+      <td>Taxa para carro: {{ carFactor }} </td>
+      <td>Taxa para motos: {{ motocycleFactor }}</td>
+      <td>Taxa para utilitários: {{ utilityFactor }}</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="container" style="padding-top: 10px;">
+  <router-outlet></router-outlet>
+</div>
+

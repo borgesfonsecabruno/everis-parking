@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:include="fragments/layout :: head">
+    <meta charset="UTF-8">
+    <title>Title 2</title>
+</head>
+<body>
+    <header th:include="fragments/layout :: header"></header>
+
+    <section>
+        <div class="container" style="width: 70vw;">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb" style="background-color: white; padding-left: 0px;">
+                    <li class="breadcrumb-item active" aria-current="page">Cadastro de Veículos</li>
+                </ol>
+            </nav>
+
+            <form th:action="@{/vehicle/register}" th:object="${vehicle}" method="post">
+                <div class="form-group">
+                    <label for="licensePlate">Placa *</label>
+                    <input id="licensePlate" class="form-control" type="text" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="brand">Marca *</label>
+                    <input id="brand" class="form-control" type="text" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="model">Modelo *</label>
+                    <input id="model" class="form-control" type="text" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="parkingFactor">Fator de escalamento de preço *</label>
+                    <input id="parkingFactor" class="form-control" type="number" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Salvar</button>
+            </form>
+        </div>
+    </section>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<h2 mat-dialog-title>Procurar</h2>
+
+<mat-dialog-content>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 mx-auto">
+        <div class="md-form">
+          <input
+            type="text"
+            [(ngModel)]="searchText"
+            class="form-control"
+            id="search"
+            mdbInput
+          />
+          <label for="search">Search</label>
+        </div>
+      </div>
+    </div>
+    <table mdbTable class="z-depth-1" hover="true">
+      <thead>
+        <tr>
+          <th> Id </th>
+          <th> Modelo </th>
+          <th> Tipo </th>
+          <th> Marca </th>
+          <th> Ano </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let el of elements" (click)="notifySelected(el)">
+          <td>{{el.id}}</td>
+          <td>{{el.model}}</td>
+          <td>{{el.type}}</td>
+          <td>{{el.brand.brand}}</td>
+          <td>{{el.year}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <div style="clear: both; width: 100%;">
+    <button style="float: right; margin: 2px;" class="btn btn-secondary shadow-none" (click)="close()">Close</button>
+  </div>
+</mat-dialog-actions>

@@ -1,0 +1,40 @@
+<div class="row">
+  <div class="col-md-12 mx-auto">
+    <div class="md-form">
+      <input
+        type="text"
+        [(ngModel)]="searchText"
+        class="form-control"
+        id="search"
+        mdbInput
+      />
+      <label for="search">Procurar</label>
+    </div>
+  </div>
+</div>
+<table mdbTable class="z-depth-1" hover="true">
+  <thead>
+    <tr>
+      <th>Placa</th>
+      <th>Tipo</th>
+      <th>Id - Model</th>
+      <th>Id - Marca</th>
+      <th>Ano</th>
+      <th>Check In?</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let vehicle of vehicles; let i = index" (click)="openDialog(vehicle)" >
+      <th scope="row">{{ vehicle.licensePlate }}</th>
+      <td>{{ vehicle.model.type }}</td>
+      <td>{{ vehicle.model.id }} - {{ vehicle.model.model }}</td>
+      <td>{{ vehicle.model.brand.id }} - {{ vehicle.model.brand.brand }}</td>
+      <td>{{ vehicle.model.year }}</td>
+      <td>
+        <span class="dot" [style.background-color]="vehicle.parkingStatus == 'in' ? 'green' : 'red'"></span>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+

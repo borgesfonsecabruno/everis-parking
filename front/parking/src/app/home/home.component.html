@@ -1,0 +1,24 @@
+<h2>Lançamentos no estacionamento</h2>
+
+<table mdbTable class="z-depth-1" hover="true">
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>Entrada</th>
+      <th>Saída</th>
+      <th>Placa</th>
+      <th>Fator de preço</th>
+      <th>Valor Total</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let ticket of tickets; let i = index">
+      <th scope="row">{{ ticket.id }}</th>
+      <td><input type="datetime-local" [value]="ticket.entry" readonly/></td>
+      <td><input type="datetime-local" [value]="ticket.departure" readonly/></td>
+      <td>{{ ticket.vehicle.licensePlate }}</td>
+      <td>{{ ticket.priceFactor.factor }}</td>
+      <td>{{ ticket.totalParking }}</td>
+    </tr>
+  </tbody>
+</table>

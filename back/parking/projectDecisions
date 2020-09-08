@@ -1,0 +1,4 @@
+Arquivo com decisões de projeto
+
+*   Double -> BigDecimal, pois envolve dinheiro e double não é 100% preciso.
+*   String -> LocalDateTime, mesmo resultado, porém, mais fácil de trabalhar com LocalDateTime.

@@ -1,0 +1,31 @@
+
+<div style="text-align: center">
+  <h2>Cadastro de Veículos</h2>
+
+  <form [formGroup]="form" style="display: inline-block; width: 60%;">
+    <div class="form-group">
+      <label for="licensePlate" style="float: left;">Placa <span> style="color: red">*</span></label>
+      <input type="text" id="licensePlate" class="form-control" formControlName="licensePlate" [style.border-color]="invalidRequired('licensePlate') ? 'red' : 'black'"/>
+    </div>
+
+    <div class="form-group">
+      <label for="vehicleModel_id" style="float: left;">Modelo <span style="color: red">*</span></label>
+      <div class="input-group">
+        <input class="input-field" type="text" id="vehicleModel_id" class="form-control" formControlName="vehicleModel_id" [style.border-color]="invalidRequired('vehicleModel_id') ? 'red' : 'black'" readonly/>
+        <button class="btn btn-primary" (click)="openDialog()" >
+          <i class="fas fa-search"></i>
+        </button>
+      </div>
+    </div>
+
+    <button class="btn btn-primary shadow-none"
+            style="float: right;"
+            type="submit"
+            (click)="submit(form)"
+            [disabled]="form.invalid">
+            Cadastrar
+    </button>
+  </form>
+
+</div>
+
