@@ -59,6 +59,10 @@ public class PriceFactor {
         this.factor = factor;
     }
 
+    public void setInitDate(LocalDate initDate) {
+        this.initDate = initDate;
+    }
+
     public LocalDate getInitDate() {
         return initDate;
     }

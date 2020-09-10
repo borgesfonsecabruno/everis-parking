@@ -6,21 +6,21 @@ import java.time.LocalDateTime;
 public class ParkingTicketCheckOutDTO {
 
     @NotNull
-    private Long ticket_id;
+    private Long ticketId;
 
     private LocalDateTime departureDateTime;
 
-    public ParkingTicketCheckOutDTO(Long ticket_id, LocalDateTime departureDateTime) {
-        this.ticket_id = ticket_id;
+    public ParkingTicketCheckOutDTO(Long ticketId, LocalDateTime departureDateTime) {
+        this.ticketId = ticketId;
         this.departureDateTime = departureDateTime;
     }
 
-    public Long getTicket_id() {
-        return ticket_id;
+    public Long getTicketId() {
+        return ticketId;
     }
 
-    public void setTicket_id(Long ticket_id) {
-        this.ticket_id = ticket_id;
+    public void setTicketId(Long ticketId) {
+        this.ticketId = ticketId;
     }
 
     public LocalDateTime getDepartureDateTime() {

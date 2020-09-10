@@ -1,3 +1,5 @@
 export class AppSettings {
-  public static PARKING = 1;
+  public static readonly PARKING = 1;
+  public static readonly SERVER = 'http://localhost:8080';
 }
+

@@ -1,3 +1,4 @@
+import { AppSettings } from './../app-settings';
 import { VehicleService } from './../services/vehicle.service';
 import { FinderComponent } from './../finder/finder.component';
 import { VehicleModelService } from './../services/vehicle-model.service';
@@ -42,7 +43,7 @@ export class AddVehiclesComponent implements OnInit {
 
         const dialog = this.dialog.open(FinderComponent, dialogConfig);
         const subscribe = dialog.componentInstance.newItemEvent.subscribe((value) => {
-          this.form.patchValue({vehicleModel_id: value});
+          this.form.patchValue({vehicleModelId: value});
         });
     });
   }
@@ -62,7 +63,8 @@ export class AddVehiclesComponent implements OnInit {
   createForm(): void {
     this.form = this.fb.group({
       licensePlate: new FormControl('', [Validators.required]),
-      vehicleModel_id: new FormControl(null, [Validators.required])
+      vehicleModelId: new FormControl(null, [Validators.required]),
+      parkingId: new FormControl(AppSettings.PARKING, [Validators.required])
     });
   }
 

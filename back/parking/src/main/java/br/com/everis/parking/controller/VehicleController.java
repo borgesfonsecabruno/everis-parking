@@ -22,8 +22,10 @@ public class VehicleController {
     private VehicleService vehicleService;
 
     @RequestMapping(value = "/{licensePlate}", method = RequestMethod.GET)
-    public ResponseEntity<VehicleResponseDTO> findVehicleById(@PathVariable String licensePlate) {
-        Vehicle vehicle = this.vehicleService.findById(licensePlate);
+    public ResponseEntity<VehicleResponseDTO> findVehicleByParking(
+            @PathVariable String licensePlate,
+            @RequestParam(value = "parkingId", required = true) Long parkingId) {
+        Vehicle vehicle = this.vehicleService.findByLicensePlateAndParking(licensePlate, parkingId);
 
         VehicleResponseDTO responseDTO = new VehicleResponseDTO(vehicle);
 
@@ -31,8 +33,9 @@ public class VehicleController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<List<VehicleResponseDTO>> findAll() {
-        List<Vehicle> vehicles= this.vehicleService.findAll();
+    public ResponseEntity<List<VehicleResponseDTO>> findAllByParking(
+            @RequestParam(value = "parkingId", required = true) Long parkingId) {
+        List<Vehicle> vehicles= this.vehicleService.findAllByParking(parkingId);
 
         List<VehicleResponseDTO> vehicleResponseDTOS =
                 vehicles.stream()

@@ -8,15 +8,15 @@ public class ParkingTicketCheckInDTO {
     private LocalDateTime entryDateTime;
 
     @NotNull
-    private String vehicle_license;
+    private String vehicleLicense;
 
     @NotNull
-    private Long parking_id;
+    private Long parkingId;
 
-    public ParkingTicketCheckInDTO(LocalDateTime entryDateTime, String vehicle_license, Long priceFactor_id, Long parking_id) {
+    public ParkingTicketCheckInDTO(LocalDateTime entryDateTime, String vehicleLicense, Long priceFactor_id, Long parkingId) {
         this.entryDateTime = entryDateTime;
-        this.vehicle_license= vehicle_license;
-        this.parking_id = parking_id;
+        this.vehicleLicense = vehicleLicense;
+        this.parkingId = parkingId;
     }
 
     public LocalDateTime getEntryDateTime() {
@@ -27,19 +27,19 @@ public class ParkingTicketCheckInDTO {
         this.entryDateTime = entryDateTime;
     }
 
-    public String getVehicle_license() {
-        return vehicle_license;
+    public String getVehicleLicense() {
+        return vehicleLicense;
     }
 
-    public void setVehicle_license(String vehicle_license) {
-        this.vehicle_license = vehicle_license;
+    public void setVehicleLicense(String vehicleLicense) {
+        this.vehicleLicense = vehicleLicense;
     }
 
-    public Long getParking_id() {
-        return parking_id;
+    public Long getParkingId() {
+        return parkingId;
     }
 
-    public void setParking_id(Long parking_id) {
-        this.parking_id = parking_id;
+    public void setParkingId(Long parkingId) {
+        this.parkingId = parkingId;
     }
 }

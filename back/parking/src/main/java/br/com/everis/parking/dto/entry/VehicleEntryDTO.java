@@ -1,7 +1,5 @@
 package br.com.everis.parking.dto.entry;
 
-import br.com.everis.parking.model.VehicleModel;
-
 import javax.validation.constraints.NotNull;
 
 public class VehicleEntryDTO {
@@ -10,11 +8,15 @@ public class VehicleEntryDTO {
     private String licensePlate;
 
     @NotNull
-    private Long vehicleModel_id;
+    private Long vehicleModelId;
 
-    public VehicleEntryDTO(String licensePlate, Long model) {
+    @NotNull
+    private Long parkingId;
+
+    public VehicleEntryDTO(String licensePlate, Long model, Long parkingId) {
         this.licensePlate = licensePlate;
-        this.vehicleModel_id = model;
+        this.vehicleModelId = model;
+        this.parkingId = parkingId;
     }
 
     public String getLicensePlate() {
@@ -25,11 +27,19 @@ public class VehicleEntryDTO {
         this.licensePlate = licensePlate;
     }
 
-    public Long getVehicleModel_id() {
-        return vehicleModel_id;
+    public Long getVehicleModelId() {
+        return vehicleModelId;
     }
 
-    public void setVehicleModel_id(Long vehicleModel_id) {
-        this.vehicleModel_id = vehicleModel_id;
+    public void setVehicleModelId(Long vehicleModelId) {
+        this.vehicleModelId = vehicleModelId;
+    }
+
+    public Long getParkingId() {
+        return parkingId;
+    }
+
+    public void setParkingId(Long parkingId) {
+        this.parkingId = parkingId;
     }
 }

@@ -1,3 +1,4 @@
+import { AppSettings } from './../app-settings';
 import { VehicleModel } from './../models/vehicle-model.model';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -9,7 +10,7 @@ import { map } from 'rxjs/operators';
 })
 export class VehicleModelService {
 
-  private readonly SERVER_URL = 'http://localhost:8080/vehicle-model';
+  private readonly SERVER_URL = AppSettings.SERVER + '/vehicle-model';
 
   constructor(private httpClient: HttpClient) { }
 

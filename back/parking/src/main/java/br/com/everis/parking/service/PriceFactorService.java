@@ -14,11 +14,8 @@ public class PriceFactorService {
     private PriceFactorRepository priceFactorRepository;
 
     public PriceFactor findCurrentFactorFor(VehicleType type) {
-        PriceFactor currentPriceFactor =
-                priceFactorRepository
-                        .findOneByVehicleTypeAndFinalDateIsNull(type)
-                        .orElseThrow(() -> new ObjectNotFoundException(type.name(), "fator de preço"));
-
-        return currentPriceFactor;
+        return priceFactorRepository
+                .findOneByVehicleTypeAndFinalDateIsNull(type)
+                .orElseThrow(() -> new ObjectNotFoundException(type.name(), "fator de preço"));
     }
 }

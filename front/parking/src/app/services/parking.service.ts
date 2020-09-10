@@ -10,7 +10,7 @@ import { FormGroup } from '@angular/forms';
 })
 export class ParkingsService {
 
-  private readonly SERVER_URL = 'http://localhost:8080/parking';
+  private readonly SERVER_URL = AppSettings.SERVER + '/parking';
 
   constructor(private httpClient: HttpClient, private router: Router) { }
 

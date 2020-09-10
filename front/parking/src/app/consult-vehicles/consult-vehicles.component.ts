@@ -26,9 +26,9 @@ export class ConsultVehiclesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.vehicleService.getAllCars().subscribe(vehicles => {
+    this.vehicleService.getAllVehiclesByParking().subscribe(vehicles => {
       vehicles.forEach(element => {
-        this.ticketService.getStatusByCar(element.licensePlate).subscribe(status => {
+        this.ticketService.getStatusVehicle(element.licensePlate).subscribe(status => {
           element.parkingStatus = status;
         });
         this.vehicles.push(element);
@@ -60,7 +60,7 @@ export class ConsultVehiclesComponent implements OnInit {
 
     const ticketsData: Ticket[] = [];
 
-    await this.ticketService.getAllByCar(vehicle.licensePlate).subscribe(
+    await this.ticketService.getAllByVehicle(vehicle.licensePlate).subscribe(
       data => {
         data.forEach(ticket => {
           ticketsData.push(ticket);

@@ -2,9 +2,7 @@ package br.com.everis.parking.model;
 
 import br.com.everis.parking.model.enums.VehicleType;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
@@ -12,17 +10,26 @@ import java.util.Objects;
 public class Vehicle {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @NotNull
     private String licensePlate;
 
     @ManyToOne
     private VehicleModel model;
 
+    @NotNull
+    @ManyToOne
+    private Parking parking;
+
     public Vehicle() {
     }
 
-    public Vehicle(String licensePlate, VehicleModel model) {
+    public Vehicle(String licensePlate, VehicleModel model, Parking parking) {
         this.licensePlate = licensePlate;
         this.model = model;
+        this.parking = parking;
     }
 
     @Override
@@ -52,5 +59,21 @@ public class Vehicle {
 
     public void setModel(VehicleModel model) {
         this.model = model;
+    }
+
+    public Parking getParking() {
+        return parking;
+    }
+
+    public void setParking(Parking parking) {
+        this.parking = parking;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

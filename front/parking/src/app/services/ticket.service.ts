@@ -1,3 +1,4 @@
+import { AppSettings } from './../app-settings';
 import { Ticket } from './../models/ticket.model';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -9,14 +10,14 @@ import { map } from 'rxjs/operators';
 })
 export class TicketService {
 
-  private readonly SERVER_URL = 'http://localhost:8080/ticket';
+  private readonly SERVER_URL = AppSettings.SERVER + '/ticket';
 
   constructor(private httpClient: HttpClient) { }
 
-  getStatusByCar(vehicleLicense: string): Observable<string> {
+  getStatusVehicle(licensePlate: string): Observable<string> {
 
     return this.httpClient
-      .get(this.SERVER_URL + '/status?byCar=' + vehicleLicense, {responseType: 'text'})
+      .get(this.SERVER_URL + '/status?licensePlate=' + licensePlate + '&parkingId=' + AppSettings.PARKING, {responseType: 'text'})
       .pipe(
         map(
           (res: string) => {
@@ -26,9 +27,9 @@ export class TicketService {
       );
   }
 
-  getAllByCar(vehicleLicense: string): Observable<Ticket[]> {
+  getAllByVehicle(licensePlate: string): Observable<Ticket[]> {
     return this.httpClient
-      .get(this.SERVER_URL + '?byCar=' + vehicleLicense)
+      .get(this.SERVER_URL + '?licensePlate=' + licensePlate + '&parkingId=' + AppSettings.PARKING)
       .pipe(
         map((data: any[]) =>
           data.map(
@@ -39,11 +40,11 @@ export class TicketService {
       );
   }
 
-  getTotalParking(id: number, departureDateTime: Date): Observable<any> {
-    return this.httpClient.get(this.SERVER_URL + '/' + id + '/totalParking?departureDateTime=' + departureDateTime);
+  getTotalParking(ticketId: number, departureDateTime: Date): Observable<any> {
+    return this.httpClient.get(this.SERVER_URL + '/' + ticketId + '/totalParking?departureDateTime=' + departureDateTime);
   }
 
-  getAll(): Observable<any> {
-    return this.httpClient.get(this.SERVER_URL);
+  getAllByParking(): Observable<any> {
+    return this.httpClient.get(this.SERVER_URL + '?parkingId=' + AppSettings.PARKING);
   }
 }

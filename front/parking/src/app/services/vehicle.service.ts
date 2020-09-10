@@ -1,3 +1,4 @@
+import { AppSettings } from './../app-settings';
 import { Vehicle } from './../models/vehicle.model';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -10,14 +11,14 @@ import { FormGroup } from '@angular/forms';
 })
 export class VehicleService {
 
-  private readonly SERVER_URL = 'http://localhost:8080/vehicle';
+  private readonly SERVER_URL = AppSettings.SERVER + '/vehicle';
 
   constructor(private httpClient: HttpClient) { }
 
-  getAllCars(): Observable<Vehicle[]> {
+  getAllVehiclesByParking(): Observable<Vehicle[]> {
 
     return this.httpClient
-      .get(this.SERVER_URL)
+      .get(this.SERVER_URL + '?parkingId=' + AppSettings.PARKING)
       .pipe(
         map((data: any[]) =>
           data.map(

@@ -12,7 +12,7 @@ export class HomeComponent implements OnInit {
   constructor(private ticketService: TicketService) { }
 
   ngOnInit(): void {
-    this.ticketService.getAll().subscribe(
+    this.ticketService.getAllByParking().subscribe(
       res => {
         res.forEach(element => {
           this.tickets.push(new Ticket(element));
@@ -21,7 +21,6 @@ export class HomeComponent implements OnInit {
       err => {
         alert(err.error.message);
       });
-
   }
 
 }

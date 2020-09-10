@@ -37,7 +37,8 @@ public class ParkingService {
         return parking;
     }
 
-    public void update(Parking toUpdateParking) {
+    public void update(Long parkingId, Parking toUpdateParking) {
+        toUpdateParking.setId(parkingId);
         Parking existentParking = this.findById(toUpdateParking.getId());
 
         if(toUpdateParking.getAddress() != null)
@@ -50,12 +51,14 @@ public class ParkingService {
     }
 
     public void checkIn(ParkingTicket parkingTicket) {
+        parkingTicket.setId(null);
+
         PriceFactor priceFactor = this.priceFactorService
                 .findCurrentFactorFor(parkingTicket.getVehicle().getModel().getType());
 
         parkingTicket.setPriceFactor(priceFactor);
 
-        this.parkingTicketService.saveIfNotPreviousCheckInWithoutDeparture(parkingTicket);
+        this.parkingTicketService.save(parkingTicket);
     }
 
     public void checkOut(ParkingTicket toUpdate) {
@@ -63,7 +66,6 @@ public class ParkingService {
 
         if(existentParkingTicket.getDepartureDateTime() != null)
             throw new DepartureHasAlreadyBeenRegisteredException(existentParkingTicket);
-
 
         LocalDateTime departureTime =
                 toUpdate.getDepartureDateTime() == null ? LocalDateTime.now() : toUpdate.getDepartureDateTime();
@@ -80,18 +82,20 @@ public class ParkingService {
     }
 
     public BigDecimal calculateRevenues(Long parking_id, VehicleType vehicleType) {
-        Parking parkingExists = this.findById(parking_id);
-
-        List<ParkingTicket> parkingTickets = this.parkingTicketService.findAllByParking(parkingExists);
+        List<ParkingTicket> parkingTickets = this.parkingTicketService.findAllByParking(parking_id);
 
         if(vehicleType != null)
             parkingTickets = parkingTickets.stream()
-                    .filter(ticket -> ticket.getVehicle().getModel().getType().equals(vehicleType))
+                    .filter(ticket -> ticket.getVehicle() != null
+                            && ticket.getVehicle().getModel() != null
+                            &&ticket.getVehicle().getModel().getType() != null
+                            && ticket.getVehicle().getModel().getType().equals(vehicleType))
                     .collect(Collectors.toList());
 
         BigDecimal totalRevenue = BigDecimal.ZERO;
         for(ParkingTicket ticket : parkingTickets) {
-            totalRevenue = totalRevenue.add(ticket.getTotalParking());
+            totalRevenue = ticket.getTotalParking() != null ?
+                    totalRevenue.add(ticket.getTotalParking()) : totalRevenue;
         }
 
         return totalRevenue;

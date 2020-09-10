@@ -1,6 +1,6 @@
 import { ParkingsService } from './../services/parking.service';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, Output, EventEmitter } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { TicketCarDialogComponent } from '../ticket-car-dialog/ticket-car-dialog.component';
 
@@ -10,6 +10,8 @@ import { TicketCarDialogComponent } from '../ticket-car-dialog/ticket-car-dialog
   styleUrls: ['./update-hour-tax.component.css']
 })
 export class UpdateHourTaxComponent implements OnInit {
+  @Output() updateHourTaxEvent = new EventEmitter<void>();
+
   currentHourValue = 0.0;
   form: FormGroup;
 
@@ -43,6 +45,7 @@ export class UpdateHourTaxComponent implements OnInit {
     this.parkingService.update(form).subscribe(
       res => {
         alert('Taxa atualizada com sucesso!');
+        this.updateHourTaxEvent.emit();
         this.close();
       },
       err => {

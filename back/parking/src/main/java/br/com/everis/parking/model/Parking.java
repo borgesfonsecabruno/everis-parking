@@ -32,6 +32,12 @@ public class Parking {
         this.hourValue = hourValue;
     }
 
+    public Parking(String address, BigDecimal hourValue, String name) {
+        this.address = address;
+        this.hourValue = hourValue;
+        this.name = name;
+    }
+
     public Long getId() {
         return id;
     }

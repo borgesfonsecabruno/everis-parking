@@ -1,15 +1,14 @@
-import { Ticket } from './../models/ticket.model';
+import { AppSettings } from './../app-settings';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PriceFactorService {
 
-  private readonly SERVER_URL = 'http://localhost:8080/price-factor';
+  private readonly SERVER_URL = AppSettings.SERVER + '/price-factor';
 
   constructor(private httpClient: HttpClient) { }
 

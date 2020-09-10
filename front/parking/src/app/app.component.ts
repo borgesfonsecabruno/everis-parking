@@ -39,7 +39,10 @@ export class AppComponent implements OnInit {
       parking => {
        dialogConfig.data = parking.hourValue;
 
-       this.dialog.open(UpdateHourTaxComponent, dialogConfig);
+       const dialog = this.dialog.open(UpdateHourTaxComponent, dialogConfig);
+       dialog.componentInstance.updateHourTaxEvent.subscribe(() => {
+        this.parkingService.getById(AppSettings.PARKING).subscribe(res => this.parkingFactor = res.hourValue);
+       });
     });
   }
 

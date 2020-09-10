@@ -55,11 +55,16 @@ public class ParkingTicket {
         if(totalHoursInPark.equals(BigDecimal.ZERO))
             totalHoursInPark = BigDecimal.ONE;
 
-        this.totalParking = totalHoursInPark
+        BigDecimal totalCalculate = totalHoursInPark
                 .multiply(hourPrice)
                 .multiply(factor);
 
-        return this.totalParking;
+        if(totalCalculate.compareTo(BigDecimal.ZERO) == -1)
+            totalCalculate = BigDecimal.ZERO;
+
+        this.totalParking = totalCalculate;
+
+        return totalCalculate;
     }
 
     public void setId(Long id) {
@@ -86,8 +91,16 @@ public class ParkingTicket {
         return totalParking;
     }
 
+    public void setTotalParking(BigDecimal totalParking) {
+        this.totalParking = totalParking;
+    }
+
     public Vehicle getVehicle() {
         return vehicle;
+    }
+
+    public void setVehicle(Vehicle vehicle) {
+        this.vehicle = vehicle;
     }
 
     public PriceFactor getPriceFactor() {

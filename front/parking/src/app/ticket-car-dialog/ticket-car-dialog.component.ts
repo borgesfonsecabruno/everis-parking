@@ -22,6 +22,7 @@ export class TicketCarDialogComponent implements OnInit {
   checkOutForm: FormGroup;
   checkInForm: FormGroup;
   checkoutValue = 0.0;
+  ticketCheckOut: Ticket;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,
               private fb: FormBuilder,
@@ -36,28 +37,29 @@ export class TicketCarDialogComponent implements OnInit {
     this.mdbTable.setDataSource(this.tickets);
     this.previous = this.mdbTable.getDataSource();
 
-    let ticketCheckOut: Ticket;
     this.data.tickets.forEach(ticket => {
       if (ticket.departure == null) {
-        ticketCheckOut = ticket;
+        this.ticketCheckOut = ticket;
       }
     });
 
     const currentTime = new Date().toISOString().slice(0, 23);
     this.checkInForm = this.fb.group({
       entryDateTime: new FormControl(currentTime),
-      vehicle_license: new FormControl(this.licensePlate),
-      parking_id: new FormControl(AppSettings.PARKING)
+      vehicleLicense: new FormControl(this.licensePlate),
+      parkingId: new FormControl(AppSettings.PARKING)
     });
 
     this.checkOutForm = this.fb.group({
       departureDateTime: new FormControl(currentTime),
-      ticket_id: new FormControl(ticketCheckOut ? ticketCheckOut.id : null)
+      ticketId: new FormControl(this.ticketCheckOut ? this.ticketCheckOut.id : null)
     });
 
-    if (ticketCheckOut) {
-      this.setTicketTotal(ticketCheckOut.id, this.checkOutForm.get('departureDateTime').value);
+    if (this.ticketCheckOut) {
+      this.setTicketTotal(this.ticketCheckOut.id, this.checkOutForm.get('departureDateTime').value);
     }
+
+    this.onChanges();
   }
 
   @HostListener('input') oninput(): void {
@@ -108,8 +110,14 @@ export class TicketCarDialogComponent implements OnInit {
     }
   }
 
-  setTicketTotal(id: number, departureDateTime: Date): void {
-    this.ticketService.getTotalParking(id, departureDateTime).subscribe(
+  onChanges(): void {
+    this.checkOutForm.valueChanges.subscribe(val => {
+      this.setTicketTotal(this.ticketCheckOut.id, this.checkOutForm.get('departureDateTime').value);
+    });
+  }
+
+  setTicketTotal(ticketId: number, departureDateTime: Date): void {
+    this.ticketService.getTotalParking(ticketId, departureDateTime).subscribe(
       data => {
         this.checkoutValue = data;
       },

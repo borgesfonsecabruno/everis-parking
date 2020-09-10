@@ -3,6 +3,7 @@ package br.com.everis.parking.service;
 import br.com.everis.parking.dto.entry.VehicleEntryDTO;
 import br.com.everis.parking.exceptions.ObjectAlreadyExists;
 import br.com.everis.parking.exceptions.ObjectNotFoundException;
+import br.com.everis.parking.model.Parking;
 import br.com.everis.parking.model.Vehicle;
 import br.com.everis.parking.model.VehicleModel;
 import br.com.everis.parking.repository.VehicleRepository;
@@ -17,19 +18,30 @@ public class VehicleService {
     @Autowired
     private VehicleRepository vehicleRepository;
 
-    public Vehicle findById(String licensePlate) {
-        Vehicle vehicle = vehicleRepository.findById(licensePlate)
+    @Autowired
+    private ParkingService parkingService;
+
+    public Vehicle findByLicensePlateAndParking(String licensePlate, Long parkingId) {
+        Parking parking = parkingService.findById(parkingId);
+
+        Vehicle vehicle = vehicleRepository.findOneByLicensePlateAndParking(licensePlate, parking)
                 .orElseThrow(() -> new ObjectNotFoundException(licensePlate, "veículo"));
 
         return vehicle;
     }
 
-    public List<Vehicle> findAll() {
-        return vehicleRepository.findAll();
+    public List<Vehicle> findAllByParking(Long parkingId) {
+        Parking parking = parkingService.findById(parkingId);
+
+        return vehicleRepository.findAllByParking(parking);
     }
 
     public Vehicle save(Vehicle vehicle) {
-        Vehicle exists = this.vehicleRepository.findById(vehicle.getLicensePlate()).orElse(null);
+        Parking parking = this.parkingService.findById(vehicle.getParking().getId());
+
+        Vehicle exists = this.vehicleRepository.findOneByLicensePlateAndParking(
+                vehicle.getLicensePlate(),
+                parking).orElse(null);
 
         if(exists != null)
             throw new ObjectAlreadyExists(vehicle.getLicensePlate(), "veiculo");
@@ -39,8 +51,11 @@ public class VehicleService {
 
     public Vehicle fromDto(VehicleEntryDTO entry) {
         VehicleModel vehicleModel = new VehicleModel();
-        vehicleModel.setId(entry.getVehicleModel_id());
+        vehicleModel.setId(entry.getVehicleModelId());
 
-        return new Vehicle(entry.getLicensePlate(), vehicleModel);
+        Parking parking = new Parking();
+        parking.setId(entry.getParkingId());
+
+        return new Vehicle(entry.getLicensePlate(), vehicleModel, parking);
     }
 }

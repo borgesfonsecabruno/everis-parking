@@ -33,33 +33,41 @@ public class ParkingTicketService {
     private ParkingService parkingService;
 
     public ParkingTicket findById(Long id) {
-        ParkingTicket parkingTicket = this.parkingTicketRepository.findById(id)
+        return this.parkingTicketRepository.findById(id)
                 .orElseThrow(() -> new ObjectNotFoundException(
                         String.valueOf(id),
                         "ticket de estacionamento"));
-
-        return parkingTicket;
     }
 
-    public List<ParkingTicket> findAllByCar(Vehicle vehicle) {
+    public List<ParkingTicket> findAllByVehicle(String licensePlate, Long parkingId) {
+        Vehicle vehicle = this.vehicleService.findByLicensePlateAndParking(licensePlate, parkingId);
+
         return this.parkingTicketRepository.findAllByVehicle(vehicle);
     }
 
-    public ParkingTicket findByVehicleAndDepartureTimeIsNull(Vehicle vehicle) {
+    public ParkingTicket findByVehicleAndDepartureTimeIsNull(String licensePlate, Long parkingId) {
+        Vehicle vehicle = this.vehicleService.findByLicensePlateAndParking(licensePlate, parkingId);
+
         return this.parkingTicketRepository
                 .findOneByVehicleAndDepartureDateTimeIsNull(vehicle).orElse(null);
     }
 
-    public List<ParkingTicket> findAll() {
-        return this.parkingTicketRepository.findAllByOrderByEntryDateTimeDesc();
+    public List<ParkingTicket> findAllByParking(Long parkingId) {
+        Parking parking = this.parkingService.findById(parkingId);
+
+        return this.parkingTicketRepository.findAllByParkingOrderByEntryDateTimeDesc(parking);
     }
 
-    public List<ParkingTicket> findAllByParking(Parking parking) {
-        return this.parkingTicketRepository.findAllByParking(parking);
-    }
+    public void save(ParkingTicket parkingTicket) {
+        VehicleType vehicleType;
 
-    public void saveIfNotPreviousCheckInWithoutDeparture(ParkingTicket parkingTicket) {
-        VehicleType vehicleType = parkingTicket.getVehicle().getModel().getType();
+        if(parkingTicket != null
+                && parkingTicket.getVehicle() != null
+                && parkingTicket.getVehicle().getModel() != null
+                && parkingTicket.getVehicle().getModel().getType() != null)
+            vehicleType = parkingTicket.getVehicle().getModel().getType();
+        else
+            throw new NullPointerException("Falta dados no ticket");
 
         PriceFactor factor = this.priceFactorService
                 .findCurrentFactorFor(vehicleType);
@@ -68,7 +76,9 @@ public class ParkingTicketService {
             throw new ObjectNotFoundException(String.valueOf(vehicleType), "fator de preço");
         }
 
-        ParkingTicket exists = this.findByVehicleAndDepartureTimeIsNull(parkingTicket.getVehicle());
+        ParkingTicket exists = this.findByVehicleAndDepartureTimeIsNull(
+                parkingTicket.getVehicle().getLicensePlate(),
+                parkingTicket.getParking().getId());
 
         if(exists != null) {
             throw new ObjectAlreadyExists(exists);
@@ -89,8 +99,8 @@ public class ParkingTicketService {
         this.parkingTicketRepository.save(existentParkingTicket);
     }
 
-    public BigDecimal getTotalParking(Long id, LocalDateTime departureDateTime) {
-        ParkingTicket ticket = this.findById(id);
+    public BigDecimal getTotalParkingByIdAndDeparture(Long ticketId, LocalDateTime departureDateTime) {
+        ParkingTicket ticket = this.findById(ticketId);
         ticket.setDepartureDateTime(departureDateTime);
         Parking parking = ticket.getParking();
 
@@ -98,8 +108,8 @@ public class ParkingTicketService {
     }
 
     public ParkingTicket fromDTO(ParkingTicketCheckInDTO entryTicket) {
-        Vehicle vehicle = this.vehicleService.findById(entryTicket.getVehicle_license());
-        Parking parking = this.parkingService.findById(entryTicket.getParking_id());
+        Vehicle vehicle = this.vehicleService.findByLicensePlateAndParking(entryTicket.getVehicleLicense(), entryTicket.getParkingId());
+        Parking parking = this.parkingService.findById(entryTicket.getParkingId());
 
         return new ParkingTicket(vehicle,
                 entryTicket.getEntryDateTime(),
@@ -110,7 +120,7 @@ public class ParkingTicketService {
     public ParkingTicket fromDTO(ParkingTicketCheckOutDTO entryTicket) {
 
         ParkingTicket fromDto = new ParkingTicket(null, null, null, null);
-        fromDto.setId(entryTicket.getTicket_id());
+        fromDto.setId(entryTicket.getTicketId());
         fromDto.setDepartureDateTime(entryTicket.getDepartureDateTime());
 
         return fromDto;

@@ -12,7 +12,6 @@ import java.util.Optional;
 @Repository
 public interface ParkingTicketRepository extends JpaRepository<ParkingTicket, Long> {
     Optional<ParkingTicket> findOneByVehicleAndDepartureDateTimeIsNull(Vehicle vehicle);
-    List<ParkingTicket> findAllByParking(Parking parking);
     List<ParkingTicket> findAllByVehicle(Vehicle vehicle);
-    List<ParkingTicket> findAllByOrderByEntryDateTimeDesc();
+    List<ParkingTicket> findAllByParkingOrderByEntryDateTimeDesc(Parking parking);
 }

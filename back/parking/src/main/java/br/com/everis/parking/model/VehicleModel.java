@@ -28,10 +28,11 @@ public class VehicleModel {
     public VehicleModel(){
     }
 
-    public VehicleModel(String model, Long year, VehicleBrand brand) {
+    public VehicleModel(String model, VehicleType type, Long year, VehicleBrand brand) {
         this.model = model;
         this.year = year;
         this.brand = brand;
+        this.type = type;
     }
 
     @Override
